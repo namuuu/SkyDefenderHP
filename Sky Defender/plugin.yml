@@ -1,0 +1,22 @@
+name: SkyDefender
+version: 0.0.1
+author: Namu
+main: fr.namu.sd.MainSD
+commands:
+  sd:
+    description: Permet d'obtenir des informations concernant le plugin SD
+    usage: /sd <command>
+  skydefender:
+    description: Permet de configurer la partie de Sky Defender
+    usage: /skydefender <command>
+  host:
+    description: Commandes des administrateurs
+    usage: /host <command>
+  h:
+    description: Commandes des administrateurs
+    usage: /h <command>
+  dev:
+    description: Commande du développeur
+    usage: /dev <command>
+loadafter: [GameClient, HPartyPlayer]
+depend: [GameClient, HPartyPlayer]
