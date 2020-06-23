@@ -62,13 +62,21 @@ public class MenuSD {
 	  }
 	  
 	  public void rulesList(Player player) {
-		  Inventory inv = Bukkit.createInventory(null, 6*9, "§7Les règles de la partie");
-		  inv.setItem(19, metaExtra(Material.DIAMOND_SWORD, "§eNiveau du Sharpness", 1, new String[] {"§bÉpée en Diamant :§a" + RulesSD.DIAMOND_SHARPNESS.getValue(), "§bÉpée en Fer :§a" + RulesSD.IRON_SHARPNESS.getValue()}));
-		  inv.setItem(20, metaExtra(Material.DIAMOND_CHESTPLATE, "§eNiveau du Protection", 1, new String[] {"§bPlastron en Diamant :§a" + RulesSD.DIAMOND_PROTECTION.getValue(), "§bPlastron en Fer :§a" + RulesSD.IRON_PROTECTION.getValue()}));
-		  inv.setItem(28, metaExtra(Material.BOW, "§eNiveau du Power", 1, new String[] {"§bArc :§a" + RulesSD.BOW_POWER.getValue()}));
-		  inv.setItem(29, metaExtra(Material.FISHING_ROD, "§eRodLess", 1, infoValue(ScenarioSD.ROD_LESS.getValue())));
-		  inv.setItem(37, metaExtra(Material.FISHING_ROD, "§eNombre de pièces en diamant", 1, new String[] {"§bPièces :§a" + RulesSD.DIAMOND_ARMOR_NB.getValue()}));
-		  inv.setItem(50, metaExtra(Material.FISHING_ROD, "§eHorseLess", 1, infoValue(ScenarioSD.HORSE_LESS.getValue())));
+		  Inventory inv = Bukkit.createInventory(null, 6*9, "");
+		  
+		  inv.setItem(10, metaExtra(Material.DIAMOND, "§eNombre de pièces en diamant", 1, new String[] {"§bPièces :§a" + RulesSD.DIAMOND_ARMOR_NB.getValue()}));
+		  inv.setItem(12, metaExtra(Material.IRON_SWORD, "§eNiveau du Sharpness", 1, new String[] {"§bÉpée en Diamant :§a" + RulesSD.DIAMOND_SHARPNESS.getValue(), "§bÉpée en Fer :§a" + RulesSD.IRON_SHARPNESS.getValue()}));
+		  inv.setItem(14, metaExtra(Material.IRON_CHESTPLATE, "§eNiveau du Protection", 1, new String[] {"§bPlastron en Diamant :§a" + RulesSD.DIAMOND_PROTECTION.getValue(), "§bPlastron en Fer :§a" + RulesSD.IRON_PROTECTION.getValue()}));
+		  inv.setItem(16, metaExtra(Material.BOW, "§eNiveau du Power", 1, new String[] {"§bArc :§a" + RulesSD.BOW_POWER.getValue()}));
+		  inv.setItem(29, metaExtra(Material.WATCH, "§eTimers de la Partie", 1, new String[] {"§bPVP :§e" + this.main.conversion(TimerSD.PVP.getValue()), "§bBordure :§e" + this.main.conversion(TimerSD.BORDER_BEGIN.getValue()), "§bFinal Heal :§e" + this.main.conversion(RulesSD.FINAL_HEAL.getValue())}));
+		  inv.setItem(33, metaExtra(Material.PAPER, "§eAfficher les Scénarios de la Partie", 1, new String[] {"§7Cliquer ici pour afficher la", "§7liste des Scénarios !"}));
+		  inv.setItem(39, metaExtra(Material.REDSTONE, "§eTaux de drops de la Partie", 1, new String[] {"§bBoost d'EXP :§e" + RulesSD.XP_BOOST.getValue(), }));
+		  inv.setItem(41, metaExtra(Material.BARRIER, "§eTailles de la Bordure", 1, new String[] {"§bBordure (Grande) :§a" + BorderSD.BORDER_MAX.getValue() + "blocs", "§bBordure (Petite) :§a" + BorderSD.BORDER_MIN.getValue() + "blocs"}));
+		  
+		  int[] SlotYellowGlass = { 
+			        0, 1, 2, 6, 7, 8, 9, 17, 18, 26, 27, 35, 36, 37, 43, 44, 45, 46, 47, 48, 49,51, 52 };
+		  for (int slotYellowGlass : SlotYellowGlass)
+		      inv.setItem(slotYellowGlass, metaGlassPane(" ", (short)4)); 
 		  player.openInventory(inv);
 	  }
 	  
@@ -86,17 +94,44 @@ public class MenuSD {
 		  player.openInventory(inv);
 	  }
 	  
+	  public void ScenarioList(Player player) {
+		  Inventory inv = Bukkit.createInventory(null, 54, "§7Liste des scénarios");
+		  
+		  inv.setItem(0, metaExtra(Material.COMPASS, "§eRetour", 1, new String[] {}));
+		  
+		  inv.setItem(10, metaExtra(Material.IRON_ORE, ScenarioSD.CUT_CLEAN.getAppearance(), 1, returnValue(ScenarioSD.CUT_CLEAN.getValue())));
+		  inv.setItem(11, metaExtra(Material.FURNACE, ScenarioSD.FAST_SMELTING.getAppearance(), 1, returnValue(ScenarioSD.FAST_SMELTING.getValue())));		  
+		  inv.setItem(12, metaExtra(Material.EYE_OF_ENDER, ScenarioSD.CAT_EYES.getAppearance(), 1, returnValue(ScenarioSD.CAT_EYES.getValue())));
+		  inv.setItem(13, metaExtra(Material.WOOL, ToolSD.RANDOM_TEAM.getAppearance(), 1, returnValue(ToolSD.RANDOM_TEAM.getValue())));
+		  inv.setItem(14, metaExtra(Material.BEACON, RulesSD.FINAL_HEAL.getAppearance(), 1, new String[] {"§aTimer : §b" + this.main.conversion(RulesSD.FINAL_HEAL.getValue())}));
+		  inv.setItem(15, metaExtra(Material.GOLDEN_APPLE, ScenarioSD.GOLDEN_HEAD.getAppearance(), 1, returnValue(ScenarioSD.GOLDEN_HEAD.getValue())));
+		  inv.setItem(16, metaExtra(Material.GOLD_PICKAXE, ScenarioSD.HASTEY_BOYS.getAppearance(), 1, returnValue(ScenarioSD.HASTEY_BOYS.getValue())));
+		  
+		  inv.setItem(19, metaExtra(Material.RABBIT_FOOT, ToolSD.PREY.getAppearance(), 1, returnValue(ToolSD.PREY.getValue())));
+		  inv.setItem(20, metaExtra(Material.FISHING_ROD, ScenarioSD.ROD_LESS.getAppearance(), 1, returnValue(ScenarioSD.ROD_LESS.getValue())));
+		  inv.setItem(21, metaExtra(Material.SADDLE, ScenarioSD.HORSE_LESS.getAppearance(), 1, returnValue(ScenarioSD.HORSE_LESS.getValue())));
+		  inv.setItem(22, metaExtra(Material.BLAZE_POWDER, ScenarioSD.FIRE_LESS.getAppearance(), 1, returnValue(ScenarioSD.FIRE_LESS.getValue())));
+		  inv.setItem(23, metaExtra(Material.EXP_BOTTLE, RulesSD.XP_BOOST.getAppearance(), 1, new String[] {"§aExperience Boost : §bx" + RulesSD.XP_BOOST.getValue()}));
+		  
+		  int[] SlotWhiteGlass = { 
+			        1, 2, 6, 7, 8, 9, 17, 18, 26, 27, 35, 36, 44, 45, 46, 47, 48, 49,51, 52 };
+		  for (int slotWhiteGlass : SlotWhiteGlass)
+		      inv.setItem(slotWhiteGlass, metaGlassPane(" ", (short)0)); 
+		  
+		  player.openInventory(inv);
+	  }
+	  
 	  public void borderEdit(Player player) {
 		  Inventory inv = Bukkit.createInventory(null, 27, "§7Paramètres de la Bordure");
 		  inv.setItem(0, metaExtra(Material.COMPASS, "§eRetour", 1, new String[] {}));
 		  
-		  inv.setItem(10, metaExtra(Material.STONE_BUTTON, "§b- 50 Blocs", 1, new String[] {}));
-		  inv.setItem(11, metaExtra(Material.REDSTONE_BLOCK, "§eBordure finale : §b" + BorderSD.BORDER_MIN.getValue() + " blocs", 1, new String[] {}));
-		  inv.setItem(12, metaExtra(Material.STONE_BUTTON, "§b+ 50 Blocs", 1, new String[] {}));
-		  
 		  inv.setItem(14, metaExtra(Material.STONE_BUTTON, "§b- 50 Blocs", 1, new String[] {}));
-		  inv.setItem(15, metaExtra(Material.GLOWSTONE, "§eBordure initiale : §b" + BorderSD.BORDER_MAX.getValue() + " blocs", 1, new String[] {}));
+		  inv.setItem(15, metaExtra(Material.REDSTONE_BLOCK, "§eBordure (Petite) : §b" + BorderSD.BORDER_MIN.getValue() + " blocs", 1, new String[] {}));
 		  inv.setItem(16, metaExtra(Material.STONE_BUTTON, "§b+ 50 Blocs", 1, new String[] {}));
+		  
+		  inv.setItem(10, metaExtra(Material.STONE_BUTTON, "§b- 50 Blocs", 1, new String[] {}));
+		  inv.setItem(11, metaExtra(Material.GLOWSTONE, "§eBordure (Grande) : §b" + BorderSD.BORDER_MAX.getValue() + " blocs", 1, new String[] {}));
+		  inv.setItem(12, metaExtra(Material.STONE_BUTTON, "§b+ 50 Blocs", 1, new String[] {}));
 		  
 		  inv.setItem(21, metaExtra(Material.STONE_BUTTON, "§b- 30 Secondes", 1, new String[] {}));
 		  inv.setItem(22, metaExtra(Material.WATCH, "§eDébut du mouvement de la Bordure : §b" + this.main.conversion(TimerSD.BORDER_BEGIN.getValue()), 1, new String[] {}));
@@ -161,6 +196,11 @@ public class MenuSD {
 		  inv.setItem(22, metaExtra(Material.BLAZE_POWDER, ScenarioSD.FIRE_LESS.getAppearance(), 1, returnValue(ScenarioSD.FIRE_LESS.getValue())));
 		  inv.setItem(23, metaExtra(Material.EXP_BOTTLE, RulesSD.XP_BOOST.getAppearance(), 1, new String[] {"§aExperience Boost : §bx" + RulesSD.XP_BOOST.getValue(), "§7Clic gauche : §8- 1", "§7Clic droit : §8+ 1"}));
 		  
+		  int[] SlotWhiteGlass = { 
+			        1, 2, 6, 7, 8, 9, 17, 18, 26, 27, 35, 36, 44, 45, 46, 47, 48, 49,51, 52 };
+		  for (int slotWhiteGlass : SlotWhiteGlass)
+		      inv.setItem(slotWhiteGlass, metaGlassPane(" ", (short)0)); 
+		  
 		  player.openInventory(inv);
 	  }
 	  
@@ -177,16 +217,21 @@ public class MenuSD {
 	  public void teamEdit(Player player) {
 		  Inventory inv = Bukkit.createInventory(null, 27, "§7Gestion des Équipes");
 		  
-		  inv.setItem(0, metaExtra(Material.COMPASS, "§eRetour", 1, new String[] {}));
-		  inv.setItem(12, metaExtra(Material.REDSTONE_BLOCK, "§cNombre d'attaquants : §b" + Camp.ATTAQUE.getValue(), 1, new String[] {}));
-		  inv.setItem(14, metaExtra(Material.LAPIS_BLOCK, "§9Nombre de défenseurs : §b" + Camp.DEFENSE.getValue(), 1, new String[] {}));
-		  inv.setItem(19, metaBanner(DyeColor.RED, "§4Taille de l'" + Camp.RED.getName() + " : §b" + Camp.RED.getValue()));
-		  inv.setItem(20, metaBanner(DyeColor.ORANGE, "§6Taille de l'" + Camp.ORANGE.getName() + " : §b" + Camp.ORANGE.getValue()));
-		  inv.setItem(21, metaBanner(DyeColor.YELLOW, "§eTaille de l'" + Camp.YELLOW.getName() + " : §b" + Camp.YELLOW.getValue()));
-		  inv.setItem(22, metaBanner(DyeColor.GREEN, "§aTaille de l'" + Camp.GREEN.getName() + " : §b" + Camp.GREEN.getValue()));
-		  inv.setItem(23, metaBanner(DyeColor.LIGHT_BLUE, "§bTaille de l'" + Camp.AQUA.getName() + " : §b" + Camp.AQUA.getValue()));
-		  inv.setItem(24, metaBanner(DyeColor.PINK, "§dTaille de l'" + Camp.PINK.getName() + " : §b" + Camp.PINK.getValue()));
-		  inv.setItem(25, metaBanner(DyeColor.PURPLE, "§5Taille de l'" + Camp.PURPLE.getName() + " : §b" + Camp.PURPLE.getValue()));
+		  if(ToolSD.MULTIPLE_TEAM.getValue() == false) {
+			  inv.setItem(0, metaExtra(Material.COMPASS, "§eRetour", 1, new String[] {}));
+			  inv.setItem(12, metaExtra(Material.REDSTONE_BLOCK, "§cNombre d'attaquants : §b" + Camp.ATTAQUE.getValue(), 1, new String[] {}));
+			  inv.setItem(14, metaExtra(Material.LAPIS_BLOCK, "§9Nombre de défenseurs : §b" + Camp.DEFENSE.getValue(), 1, new String[] {}));
+		  } else {
+			  inv.setItem(0, metaExtra(Material.COMPASS, "§eRetour", 1, new String[] {}));
+			  inv.setItem(13, metaExtra(Material.LAPIS_BLOCK, "§9Nombre de défenseurs : §b" + Camp.DEFENSE.getValue(), 1, new String[] {}));
+			  inv.setItem(19, metaBanner(DyeColor.RED, "§4Taille de l'" + Camp.RED.getName() + " : §b" + Camp.RED.getValue()));
+			  inv.setItem(20, metaBanner(DyeColor.ORANGE, "§6Taille de l'" + Camp.ORANGE.getName() + " : §b" + Camp.ORANGE.getValue()));
+		  	  inv.setItem(21, metaBanner(DyeColor.YELLOW, "§eTaille de l'" + Camp.YELLOW.getName() + " : §b" + Camp.YELLOW.getValue()));
+		  	  inv.setItem(22, metaBanner(DyeColor.GREEN, "§aTaille de l'" + Camp.GREEN.getName() + " : §b" + Camp.GREEN.getValue()));
+		  	  inv.setItem(23, metaBanner(DyeColor.LIGHT_BLUE, "§bTaille de l'" + Camp.AQUA.getName() + " : §b" + Camp.AQUA.getValue()));
+		  	  inv.setItem(24, metaBanner(DyeColor.PINK, "§dTaille de l'" + Camp.PINK.getName() + " : §b" + Camp.PINK.getValue()));
+		  	  inv.setItem(25, metaBanner(DyeColor.PURPLE, "§5Taille de l'" + Camp.PURPLE.getName() + " : §b" + Camp.PURPLE.getValue()));
+		  }
 		  
 		  player.openInventory(inv);
 	  }
@@ -217,6 +262,15 @@ public class MenuSD {
 		  item.setItemMeta(bm);
 		  return item;
 	  } //metaBanner(DyeColor, "")
+	  
+	  public ItemStack metaGlassPane(String ItemName, Short Durability) {
+		  ItemStack item = new ItemStack(Material.STAINED_GLASS_PANE, 1);
+		  ItemMeta im = item.getItemMeta();
+		  im.setDisplayName(ItemName);
+		  item.setItemMeta(im);
+		  item.setDurability(Durability);
+		  return item;
+	  } // metaGlassPane("", (Short))
 	  
 	  
 	  

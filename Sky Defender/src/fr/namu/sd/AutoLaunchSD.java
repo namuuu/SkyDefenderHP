@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,8 +15,10 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -44,7 +47,12 @@ public class AutoLaunchSD extends BukkitRunnable {
 	  @SuppressWarnings("deprecation")
 	public void run() {
 		  this.main.score.updateBoard();
-		  
+		  List<UUID> playersColor = new ArrayList<>(this.main.playersd.keySet());
+		  for(Integer ind = 0; ind<playersColor.size(); ind++) {
+			  Player playerColor = Bukkit.getPlayer(playersColor.get(0));
+			  PlayerSD psdColor = this.main.playersd.get(playersColor.get(0));
+			  this.colorMovement(playerColor, psdColor.getCamp());
+		  }		  		  
 	if (this.main.isState(StateSD.TELEPORTATION)) {	
 	      World world = Bukkit.getWorld("world");
 	      this.main.setState(StateSD.TELEPORTATION);
@@ -56,14 +64,14 @@ public class AutoLaunchSD extends BukkitRunnable {
 	      
 	      List<UUID> atk = new ArrayList<>(this.main.playersd.keySet());
 	      Collections.shuffle(atk);
-	      while (new ArrayList<>(this.main.playersd.keySet()).size() > number) {
+	      while (atk.size() > number) {
 	    	  UUID playername = atk.get(number);
 	    	  PlayerSD psd = this.main.playersd.get(playername);
 	    	  if(psd.getCamp() != Camp.ATTAQUE) {
 	    		  atk.remove(number);
 	    	  }
 	    	  this.number++;
-	    	  if (atk.isEmpty())
+	    	  if (atk.isEmpty() || !(atk.size() > number))
 	    		  break;
 	      }
 	      
@@ -143,25 +151,26 @@ public class AutoLaunchSD extends BukkitRunnable {
 	      } 
 	      int x = (int)world.getSpawnLocation().getX();
 	      int z = (int)world.getSpawnLocation().getZ();
-	      world.setSpawnLocation(x, 151, z);
+	      int y = (int)world.getSpawnLocation().getY();
+	      world.setSpawnLocation(x, y, z); // 184
 	      for (int i = -16; i <= 16; i++) {
 	        for (int j = -16; j <= 16; j++) {
-	          (new Location(world, (i + x), 150.0D, (j + z))).getBlock().setType(Material.AIR);
-	          (new Location(world, (i + x), 154.0D, (j + z))).getBlock().setType(Material.AIR);
+	          (new Location(world, (i + x), y-1, (j + z))).getBlock().setType(Material.BARRIER);
+	          (new Location(world, (i + x), y+3, (j + z))).getBlock().setType(Material.BARRIER);
 	        } 
-	        (new Location(world, (i + x), 151.0D, (z - 16))).getBlock().setType(Material.AIR);
-	        (new Location(world, (i + x), 152.0D, (z - 16))).getBlock().setType(Material.AIR);
-	        (new Location(world, (i + x), 153.0D, (z - 16))).getBlock().setType(Material.AIR);
-	        (new Location(world, (i + x), 151.0D, (z + 16))).getBlock().setType(Material.AIR);
-	        (new Location(world, (i + x), 152.0D, (z + 16))).getBlock().setType(Material.AIR);
-	        (new Location(world, (i + x), 153.0D, (z + 16))).getBlock().setType(Material.AIR);
-	        (new Location(world, (x - 16), 151.0D, (i + z))).getBlock().setType(Material.AIR);
-	        (new Location(world, (x - 16), 152.0D, (i + z))).getBlock().setType(Material.AIR);
-	        (new Location(world, (x - 16), 153.0D, (i + z))).getBlock().setType(Material.AIR);
-	        (new Location(world, (x + 16), 151.0D, (i + z))).getBlock().setType(Material.AIR);
-	        (new Location(world, (x + 16), 152.0D, (i + z))).getBlock().setType(Material.AIR);
-	        (new Location(world, (x + 16), 153.0D, (i + z))).getBlock().setType(Material.AIR);
-	      } 
+	        (new Location(world, (i + x), y  , (z - 16))).getBlock().setType(Material.BARRIER);
+	        (new Location(world, (i + x), y+1, (z - 16))).getBlock().setType(Material.BARRIER);
+	        (new Location(world, (i + x), y+3, (z - 16))).getBlock().setType(Material.BARRIER);
+	        (new Location(world, (i + x), y  , (z + 16))).getBlock().setType(Material.BARRIER);
+	        (new Location(world, (i + x), y+1, (z + 16))).getBlock().setType(Material.BARRIER);
+	        (new Location(world, (i + x), y+2, (z + 16))).getBlock().setType(Material.BARRIER);
+	        (new Location(world, (x - 16), y  , (i + z))).getBlock().setType(Material.BARRIER);
+	        (new Location(world, (x - 16), y+1, (i + z))).getBlock().setType(Material.BARRIER);
+	        (new Location(world, (x - 16), y+2, (i + z))).getBlock().setType(Material.BARRIER);
+	        (new Location(world, (x + 16), y  , (i + z))).getBlock().setType(Material.BARRIER);
+	        (new Location(world, (x + 16), y+1, (i + z))).getBlock().setType(Material.BARRIER);
+	        (new Location(world, (x + 16), y+2, (i + z))).getBlock().setType(Material.BARRIER);
+	        	} 
 	      world.setTime(0L);
 	      this.main.setState(StateSD.GAME);
 	      this.main.mjc.startGame();
@@ -170,6 +179,49 @@ public class AutoLaunchSD extends BukkitRunnable {
 	      start.runTaskTimer((Plugin)this.main, 0L, 20L);
 	      cancel();
 	    } 
+	  }
+	  
+	  @SuppressWarnings("deprecation")
+	public void colorMovement(Player player, Camp camp) {
+		  World world = player.getWorld();
+		  PlayerSD psd = this.main.playersd.get(player.getUniqueId());
+		  Location ploc = player.getLocation();
+		  Material block1 = world.getBlockAt(ploc.getBlockX(), ploc.getBlockY() - 1, ploc.getBlockZ()).getType();
+		  Material block2 = world.getBlockAt(ploc.getBlockX(), ploc.getBlockY() - 2, ploc.getBlockZ()).getType();
+		  
+		  if(player.getGameMode() == GameMode.ADVENTURE && this.main.isState(StateSD.LOBBY)) {
+			  if(block1 == Material.BARRIER || block2 == Material.BARRIER || block1 == Material.STAINED_GLASS || block2 == Material.STAINED_GLASS) {
+				  Block changeBlock = world.getBlockAt(ploc.getBlockX(),  (int)world.getSpawnLocation().getY() - 1, ploc.getBlockZ());
+				    if(psd.getCamp() == Camp.ATTAQUE) {
+					  changeBlock.setType(Material.STAINED_GLASS);
+						changeBlock.setData(DyeColor.RED.getData());
+					} else if(psd.getCamp() == Camp.DEFENSE) {
+						changeBlock.setType(Material.STAINED_GLASS);
+						changeBlock.setData(DyeColor.BLUE.getData());
+					} else if (psd.getCamp() == Camp.RED) {
+						changeBlock.setType(Material.STAINED_GLASS);
+						changeBlock.setData(DyeColor.RED.getData());
+					} else if (psd.getCamp() == Camp.ORANGE) {
+						changeBlock.setType(Material.STAINED_GLASS);
+						changeBlock.setData(DyeColor.ORANGE.getData());
+					} else if (psd.getCamp() == Camp.YELLOW) {
+						changeBlock.setType(Material.STAINED_GLASS);
+						changeBlock.setData(DyeColor.YELLOW.getData());
+					} else if (psd.getCamp() == Camp.GREEN) {
+						changeBlock.setType(Material.STAINED_GLASS);
+						changeBlock.setData(DyeColor.GREEN.getData());
+					} else if (psd.getCamp() == Camp.AQUA) {
+						changeBlock.setType(Material.STAINED_GLASS);
+						changeBlock.setData(DyeColor.LIGHT_BLUE.getData());
+					} else if (psd.getCamp() == Camp.PINK) {
+						changeBlock.setType(Material.STAINED_GLASS);
+						changeBlock.setData(DyeColor.PINK.getData());
+					} else if (psd.getCamp() == Camp.PURPLE) {
+						changeBlock.setType(Material.STAINED_GLASS);
+						changeBlock.setData(DyeColor.PURPLE.getData());
+					}				  
+			  }
+		  }
 	  }
 	  
 	  public void eparpillementSolo(UUID playername, double d, String message) {
@@ -225,5 +277,15 @@ public class AutoLaunchSD extends BukkitRunnable {
 	    	  }
 	      }
 	  }
+	  
+	  public ItemStack metaGlass(String ItemName, Short Durability) {
+		  ItemStack item = new ItemStack(Material.STAINED_GLASS, 1);
+		  ItemMeta im = item.getItemMeta();
+		  im.setDisplayName(ItemName);
+		  item.setItemMeta(im);
+		  item.setDurability(Durability);
+		  return item;
+	  } // metaGlass("", (Short))
+	  
 }
 

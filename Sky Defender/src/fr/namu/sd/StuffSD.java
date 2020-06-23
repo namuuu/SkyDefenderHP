@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class StuffSD {
 	
-	private final List<ItemStack> death_loot = new ArrayList<>();
+	  private final List<ItemStack> death_loot = new ArrayList<>();
 	  
 	  private final List<ItemStack> start_loot = new ArrayList<>();
 	  

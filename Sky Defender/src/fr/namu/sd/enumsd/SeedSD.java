@@ -1,17 +1,16 @@
 package fr.namu.sd.enumsd;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
+import java.util.HashMap;
 
-public enum SeedSD {
+import org.bukkit.Location;;
 
-	BETA("Bêta", -7202540931898112989L, new Location(Bukkit.getWorld("world"), 0, 0, -0), new Location(Bukkit.getWorld("world"), -0, 0, -0), new Location(Bukkit.getWorld("world"), -0, 0, -0), new Location(Bukkit.getWorld("world"), 0, 0, -0)),
-	
-	;
+public class SeedSD {
+
+	public static HashMap<String, SeedSD> seed = new HashMap<>();
 	
 	private final String name;
 	
-	private final Long seed;
+	private final String WUID;
 	
 	private final Location banner;
 	
@@ -21,21 +20,24 @@ public enum SeedSD {
 	
 	private final Location defSpawn;
 	
-	SeedSD(String name, Long seed, Location banner, Location tpUp, Location tpDown, Location defSpawn) {
+	public SeedSD(String name, String WUID, Location banner, Location tpUp, Location tpDown, Location defSpawn) {
 		this.name = name;
-		this.seed = seed;
+		this.WUID = WUID;
 		this.banner = banner;
 		this.tpUp = tpUp;
 		this.tpDown = tpDown;
 		this.defSpawn = defSpawn;
+		SeedSD.seed.put(WUID, this);
 	}
+	
+	
 	
 	public String getName() {
 		return this.name;
 	}
 	
-	public Long getSeed() {
-		return this.seed;
+	public String getWUID() {
+		return this.WUID;
 	}
 	
 	public Location getBanner() {

@@ -2,7 +2,6 @@ package fr.namu.sd;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -65,16 +64,20 @@ public class MainSD extends JavaPlugin {
 	  
 	  public final MenuListener ml = new MenuListener(this);
 	  
+	  public final DevCMD devcmd = new DevCMD(this);
+	  
 	  private StateSD state;
 	  
 	  private Location defspawn = null;
 	  private Location defup = null;
 	  private Location defdown = null;
 	  private Location banner = null;
+	  private String mapName = "";
 	
 	@Override
 	public void onEnable() {
 		System.out.println("Sky Defender is enabled.");
+		enableSeeds();
 		this.mjc = new MiniJeux(this, "SkyDefender", Bukkit.getServerName(), 24, 25578);
 	    setState(StateSD.LOBBY);
 	    this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
@@ -96,7 +99,7 @@ public class MainSD extends JavaPlugin {
 	    mjc.setLeaveRestricted(false);
 	    TabGestion.actualise = false;
 	    this.setScoreBoardTeams();
-	}
+	    }
 	
 	public void onDisable() {
 		System.out.println("Sky Defender is disabled");
@@ -122,32 +125,30 @@ public class MainSD extends JavaPlugin {
 	      world.setGameRuleValue("randomTickSpeed", "20");
 	      world.setGameRuleValue("announceAdvancements", "false");
 	      world.getWorldBorder().reset();
-	      world.setSpawnLocation(0, 151, 0);
 	      int x = (int)world.getSpawnLocation().getX();
 	      int z = (int)world.getSpawnLocation().getZ();
-	      world.setSpawnLocation(x, 184, z);
+	      int y = (int)world.getSpawnLocation().getY();
+	      world.setSpawnLocation(x, y, z); // 184
 	      for (int i = -16; i <= 16; i++) {
 	        for (int j = -16; j <= 16; j++) {
-	          (new Location(world, (i + x), 183.0D, (j + z))).getBlock().setType(Material.BARRIER);
-	          (new Location(world, (i + x), 187.0D, (j + z))).getBlock().setType(Material.BARRIER);
+	          (new Location(world, (i + x), y-1, (j + z))).getBlock().setType(Material.BARRIER);
+	          (new Location(world, (i + x), y+3, (j + z))).getBlock().setType(Material.BARRIER);
 	        } 
-	        (new Location(world, (i + x), 184.0D, (z - 16))).getBlock().setType(Material.BARRIER);
-	        (new Location(world, (i + x), 185.0D, (z - 16))).getBlock().setType(Material.BARRIER);
-	        (new Location(world, (i + x), 187.0D, (z - 16))).getBlock().setType(Material.BARRIER);
-	        (new Location(world, (i + x), 184.0D, (z + 16))).getBlock().setType(Material.BARRIER);
-	        (new Location(world, (i + x), 185.0D, (z + 16))).getBlock().setType(Material.BARRIER);
-	        (new Location(world, (i + x), 186.0D, (z + 16))).getBlock().setType(Material.BARRIER);
-	        (new Location(world, (x - 16), 184.0D, (i + z))).getBlock().setType(Material.BARRIER);
-	        (new Location(world, (x - 16), 185.0D, (i + z))).getBlock().setType(Material.BARRIER);
-	        (new Location(world, (x - 16), 186.0D, (i + z))).getBlock().setType(Material.BARRIER);
-	        (new Location(world, (x + 16), 184.0D, (i + z))).getBlock().setType(Material.BARRIER);
-	        (new Location(world, (x + 16), 185.0D, (i + z))).getBlock().setType(Material.BARRIER);
-	        (new Location(world, (x + 16), 186.0D, (i + z))).getBlock().setType(Material.BARRIER);
-	        
-	        Long seed = world.getSeed();
-	        setSeedLocation(seed);
-	   
-	      } 
+	        (new Location(world, (i + x), y  , (z - 16))).getBlock().setType(Material.BARRIER);
+	        (new Location(world, (i + x), y+1, (z - 16))).getBlock().setType(Material.BARRIER);
+	        (new Location(world, (i + x), y+3, (z - 16))).getBlock().setType(Material.BARRIER);
+	        (new Location(world, (i + x), y  , (z + 16))).getBlock().setType(Material.BARRIER);
+	        (new Location(world, (i + x), y+1, (z + 16))).getBlock().setType(Material.BARRIER);
+	        (new Location(world, (i + x), y+2, (z + 16))).getBlock().setType(Material.BARRIER);
+	        (new Location(world, (x - 16), y  , (i + z))).getBlock().setType(Material.BARRIER);
+	        (new Location(world, (x - 16), y+1, (i + z))).getBlock().setType(Material.BARRIER);
+	        (new Location(world, (x - 16), y+2, (i + z))).getBlock().setType(Material.BARRIER);
+	        (new Location(world, (x + 16), y  , (i + z))).getBlock().setType(Material.BARRIER);
+	        (new Location(world, (x + 16), y+1, (i + z))).getBlock().setType(Material.BARRIER);
+	        (new Location(world, (x + 16), y+2, (i + z))).getBlock().setType(Material.BARRIER);
+	        	} 
+	      	String WUID = world.getUID().toString();
+	        setSeedLocation(WUID);
 	    } catch (Exception e) {
 	      Bukkit.broadcastMessage(ChatColor.RED + "Une erreur est survenue. Le Plugin SkyDefender n'a pas pu charger.");
 	    } 
@@ -243,6 +244,10 @@ public class MainSD extends JavaPlugin {
 		return this.banner;
 	}
 	
+	public String getMapName() {
+		return this.mapName;
+	}
+	
 	public void setCamp(Player player, Camp camp) {
 		PlayerSD psd = this.playersd.get(player.getUniqueId());
 		psd.setCamp(camp);
@@ -250,19 +255,26 @@ public class MainSD extends JavaPlugin {
  	    player.setPlayerListName("§7[" + camp.getName() + "§7] " + player.getName());
 	}
 	
-	public void setSeedLocation(long Seed) {
-		List<SeedSD> seedList = Arrays.asList(SeedSD.values());
-		for(Integer ind = 0; ind<seedList.size(); ind++){
-			SeedSD mapCompare = seedList.get(ind);
-			Long seedCompare = mapCompare.getSeed();
-			if (seedCompare == Seed) {
-				this.banner = mapCompare.getBanner();
-				this.defdown = mapCompare.getTPDown();
-				this.defup = mapCompare.getTPUP();
-				this.defspawn = mapCompare.getDefSpawn();
-				System.out.println("§e[H.PARTY] §fUne Map a été trouvée ! Son nom est : " + mapCompare.getName());
-			}
+	public void enableSeeds() {
+		new SeedSD("Médiévale", "bc70bd50-6e25-4658-a774-cd4fa4ec861e", new Location(Bukkit.getWorld("world"), -3, 209, -19), new Location(Bukkit.getWorld("world"), -22, 158, 0), new Location(Bukkit.getWorld("world"), 0, 70, 0), new Location(Bukkit.getWorld("world"), 0, 189, 0));
+        new SeedSD("Observatoire", "f8f54319-5aa7-43b6-a48f-4b4de1a41db5", new Location(Bukkit.getWorld("world"), 0, 240, 0), new Location(Bukkit.getWorld("world"), 65, 197, 31), new Location(Bukkit.getWorld("world"), 66, 69, 44), new Location(Bukkit.getWorld("world"), 1, 230, 0));
+	}
+	
+	public void setSeedLocation(String WUID) {
+		System.out.println("§e[H.PARTY] §fRecherche d'une Seed...");
+		SeedSD seedsd = SeedSD.seed.get(WUID);
+		if(seedsd != null) {
+			this.banner = seedsd.getBanner();
+	        this.defdown = seedsd.getTPDown();
+	        this.defup = seedsd.getTPUP();
+	        this.defspawn = seedsd.getDefSpawn();
+	        System.out.println("§e[H.PARTY] §fUne Map a été trouvée ! Son WUID est : " + seedsd.getWUID());
+	        this.mapName = seedsd.getName();
+		} else {
+			System.out.println("§e[H.PARTY] §fAucune Map n'a été trouvée...");
+			this.mapName = "Custom Map";
 		}
+		
 	}
 	
 	  public ItemStack metaExtra(Material m, String ItemName, int Amount, String[] lore) {

@@ -10,6 +10,8 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
 public class PlayerSD {
@@ -21,7 +23,7 @@ public class PlayerSD {
 	  
 	  private Boolean kit = Boolean.valueOf(false);
 	  
-	  Scoreboard board;
+	  Scoreboard board;	  	  
 	  
 	  private final List<ItemStack> itemsdeath = new ArrayList<>();
 	  
@@ -31,6 +33,8 @@ public class PlayerSD {
 	  
 	  private int nbkill = 0;
 	  
+	  private int damage = 0;
+	  
 	  private UUID killer = null;
 	  
 	  private UUID prey = null;
@@ -39,10 +43,16 @@ public class PlayerSD {
 	  
 	  public PlayerSD() {
 	    this.board = Bukkit.getScoreboardManager().getNewScoreboard();
+	    this.LifeBoard();
 	  }
 	  
 	  public Scoreboard getScoreBoard() {
 	    return this.board;
+	  }
+	  
+	  public void LifeBoard() {
+		  final Objective lifeObjective = board.registerNewObjective("Health", "health");
+		  lifeObjective.setDisplaySlot(DisplaySlot.PLAYER_LIST);
 	  }
 	  
 	  public void setScoreBoard(Scoreboard board) {
@@ -97,7 +107,8 @@ public class PlayerSD {
 	    return this.camp;
 	  }
 	  
-	  public Boolean isRole(Camp camp) {
+	  @SuppressWarnings("unlikely-arg-type")
+	public Boolean isRole(Camp camp) {
 	    return Boolean.valueOf(this.kit.equals(camp));
 	  }
 	  
@@ -139,6 +150,14 @@ public class PlayerSD {
 	  
 	  public UUID getLastDamager() {
 		  return this.lastDamager;
+	  }
+	  
+	  public void increaseDamage(int damage) {
+		  this.damage = this.damage + damage;
+	  }
+	  
+	  public int getDamage() {
+		  return this.damage;
 	  }
 	  
 	  public void decDiamondLimit() {

@@ -11,6 +11,8 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 import fr.namu.sd.MainSD;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 public class DefaultCMD implements TabExecutor{
 	final MainSD main;
@@ -20,17 +22,24 @@ public class DefaultCMD implements TabExecutor{
 	  }
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		Player player = (Player) sender;
 	    if (args.length == 0)
 	      return false; 
 	    switch (args[0]){
 	      case "team" :	        
 	        if (sender instanceof Player)
-	          this.main.menusd.teamList((Player)sender); 
+	          this.main.menusd.teamList(player); 
 	        return true;
 	      case "rules" :
 	    	if(sender instanceof Player)
-	    		this.main.menusd.rulesList((Player)sender);
+	    		this.main.menusd.rulesList(player);
 	    	return true;
+	      case "bug" : 
+	    	  //https://forms.gle/xk1vyTqqEfgRFrgT6
+	    	  TextComponent msg = new TextComponent("§9Vous avez rencontré un bug au cours de votre partie ? Pour le signaler, veuillez cliquer §e§l§nICI");
+	    	  msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://forms.gle/xk1vyTqqEfgRFrgT6"));
+
+	    	  player.spigot().sendMessage(msg);
 	      case "inv" :
 	    	  if(sender instanceof Player && this.main.mjc.isSpectator(((Player) sender).getUniqueId())) {
 	    		  try {
@@ -38,7 +47,7 @@ public class DefaultCMD implements TabExecutor{
 	    			  Player Select = Bukkit.getPlayer(args[1]);
 	    			  this.main.menusd.playerInvSee(Sender, Select);
 	    		  } catch (Exception e) {
-	    			  sender.sendMessage("§cCe joueur est déconnecté ou n'existe pas !");
+	    			  player.sendMessage("§cCe joueur est déconnecté ou n'existe pas !");
 	    		  }
 	    	  }
 	    		  
@@ -51,7 +60,7 @@ public class DefaultCMD implements TabExecutor{
 	
 	
 	public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] args) {
-	    String[] tabe = { "team", "rules" };
+	    String[] tabe = { "team", "rules", "bug" };
 	    List<String> tab = new ArrayList<>(Arrays.asList(tabe));
 	    if (args.length == 0)
 	      return tab; 

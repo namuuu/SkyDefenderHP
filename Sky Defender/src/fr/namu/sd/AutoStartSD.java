@@ -31,27 +31,22 @@ public class AutoStartSD extends BukkitRunnable{
 		  WorldBorder wb = world.getWorldBorder();
 		  
 		  List<UUID> players = new ArrayList<>(this.main.playersd.keySet());
-		    while (!players.isEmpty()) {
-		    	UUID playername = players.get(0);
+		    for (Integer ind = 0; ind<players.size(); ind++) {
+		    	UUID playername = players.get(ind);
 		        Player player = Bukkit.getPlayer(playername);
 		        		        		        		        		   
 		        
 		    	if(this.main.score.getTimer() == RulesSD.FINAL_HEAL.getValue()) {
 		    		player.setHealth(player.getMaxHealth());
 		    		player.setFoodLevel(20);
-		    		player.sendMessage("Vous avez reçu le Final Heal !");
+		    		player.sendMessage("§aVous avez reçu le Final Heal !");
 		    	}
-		        
-		    	players.remove(0);		    
-		    }
-		    
-		    if (this.main.score.getTimer() == TimerSD.PVP.getValue() && !world.getPVP()) {
-	            world.setPVP(true);
-	            for (Player p : Bukkit.getOnlinePlayers()) {
-	            	p.sendMessage("§cLe PVP est maintenant activé.");
-	            	p.playSound(p.getLocation(), Sound.WOLF_GROWL, 1.0F, 20.0F);
-	            }
-	          } 
+		    	if(this.main.score.getTimer() == TimerSD.PVP.getValue()) {
+		    		player.sendMessage("§cLe PVP est maintenant activé.");
+	            	player.playSound(player.getLocation(), Sound.WOLF_GROWL, 1.0F, 20.0F);
+	            	world.setPVP(true);
+		    	}
+		    } 
 		    
 		    if(this.main.score.getTimer() == 30) {
 	        	Bukkit.broadcastMessage("§cVotre période de grâce est terminée !");

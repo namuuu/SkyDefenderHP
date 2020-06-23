@@ -32,6 +32,7 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Team;
@@ -50,7 +51,7 @@ public class PlayerListener implements Listener {
   
   private int def = 0;
   
-  private String hostName = "";
+  public static UUID hostName = null;
   
   public PlayerListener(MainSD main1) {
     this.main = main1;
@@ -59,7 +60,7 @@ public class PlayerListener implements Listener {
   @EventHandler
   private void onWhiteList(WhiteListEvent event) {
 	  if (event.isHost()) {
-		  hostName = event.getPlPseudo().getName();
+		  PlayerListener.hostName = event.getPlPseudo().getUniqueId();
 	  }
   }
   
@@ -74,13 +75,14 @@ public class PlayerListener implements Listener {
     	player.setCustomName("§7[§fAucune Équipe§7] " + player.getName());
  	    player.setPlayerListName("§7[§fAucune Équipe§7] " + player.getName());
  	    event.getPlayer().getInventory().setItem(7, metaExtra(Material.BOOK, "§eLes règles", 1, new String[] {""}));
- 	    if(player.getName().equals(hostName)) {
+ 	    if(player.getUniqueId().equals(hostName)) {
  	    	event.getPlayer().getInventory().setItem(1, metaExtra(Material.NETHER_STAR, "§eParamétrer la partie", 1, new String[] {""}));
  	    }
     } else if (this.main.mjc.isSpectator(player.getUniqueId())) {
     	event.getPlayer().setGameMode(GameMode.SPECTATOR);
     	this.main.mjc.setLeaveRestrictedPlayer(player, Boolean.valueOf(false));
-    } 
+    }
+    this.main.score.updateBoard();
   }
   
   
@@ -203,9 +205,9 @@ public class PlayerListener implements Listener {
 	      return; 
 	    PlayerSD puhg = (PlayerSD)this.main.playersd.get(player.getUniqueId());
 	    if(puhg.getLastDamager() != null) {
-	    	Bukkit.getServer().broadcastMessage("§b"+ player.getName() + " §ea été tué par §b" + Bukkit.getPlayer(puhg.getLastDamager()).getName());
+	    	Bukkit.getServer().broadcastMessage(puhg.getCamp().getName() + " §b"+ player.getName() + " §ea été tué par §b" + Bukkit.getPlayer(puhg.getLastDamager()).getName());
 	    } else {
-	    	Bukkit.getServer().broadcastMessage("§b"+ player.getName() + " §eest mort.");
+	    	Bukkit.getServer().broadcastMessage(puhg.getCamp().getName() + " §b"+ player.getName() + " §eest mort.");
 	    }
 	    if (!puhg.isState(State.VIVANT))
 	      return; 
@@ -244,7 +246,9 @@ public class PlayerListener implements Listener {
 		  UUID lastHit = event.getEntity().getUniqueId();
 		  if(event.getDamager() instanceof Player) {
 			  UUID lastDamager = event.getDamager().getUniqueId();
+			  PlayerSD psdLastDamager = this.main.playersd.get(lastDamager);
 			  this.main.playersd.get(lastHit).setLastDamager(lastDamager);
+			  psdLastDamager.increaseDamage((int) event.getDamage());
 			  
 		  } else if (event.getDamager() instanceof Arrow) {
 			  Entity lastDamagerEntity = event.getDamager();
@@ -253,7 +257,9 @@ public class PlayerListener implements Listener {
 				  if(lastDamagerEntity instanceof Player) {
 					  Player lastDamager = (Player)lastDamagerEntity;
 					  UUID lastDamagerID = lastDamager.getUniqueId();
+					  PlayerSD psdLastDamager = this.main.playersd.get(lastDamagerID);
 					  this.main.playersd.get(lastHit).setLastDamager(lastDamagerID);
+					  psdLastDamager.increaseDamage((int) event.getDamage());
 				  }
 			  }
 		  }
@@ -281,8 +287,7 @@ public class PlayerListener implements Listener {
       if (!(damager instanceof Player)) {
     	  return;
       }
-	  String killername = damager.getName();
-	  Bukkit.getServer().broadcastMessage("§b"+ playername + " §ea été tué par §b" + killername);
+	  
 
 	  
 	  if (!this.main.playersd.containsKey(player.getUniqueId()))
@@ -290,6 +295,10 @@ public class PlayerListener implements Listener {
 	    PlayerSD puhg = (PlayerSD)this.main.playersd.get(player.getUniqueId());
 	    if (!puhg.isState(State.VIVANT))
 	      return; 
+	    String killername = damager.getName();
+		Bukkit.getServer().broadcastMessage(puhg.getCamp().getName() + " §b"+ playername + " §ea été tué par §b" + killername);
+		player.performCommand("sd bug");
+		
 	    puhg.setSpawn(player.getLocation());
 	    puhg.clearItemDeath();
 	    puhg.setItemDeath((ItemStack[])player.getInventory().getContents().clone());
@@ -301,6 +310,7 @@ public class PlayerListener implements Listener {
 	      puhg.addItemDeath(player.getInventory().getLeggings()); 
 	    if (player.getInventory().getBoots() != null)
 	      puhg.addItemDeath(player.getInventory().getBoots()); 
+	    puhg.addItemDeath(skullMeta("§e" + player.getName(), player.getUniqueId()));
 	    if (damager != null) {
 	      this.main.death_manage.deathStep(player, (Player)damager);
 	      
@@ -345,8 +355,16 @@ public class PlayerListener implements Listener {
 		    	}
 		    
 	  }
-		  double dist = e.getBlock().getLocation().distance(this.main.getBanner());
-		  if (dist<=2 && dist!=0) {
+		  double distBanner = e.getBlock().getLocation().distance(this.main.getBanner());
+		  double distTpUp = e.getBlock().getLocation().distance(this.main.getDefUp());
+		  double distTpDown = e.getBlock().getLocation().distance(this.main.getDefDown());
+		  if (distBanner<=2 && distBanner!=0) {
+			  e.setCancelled(true);
+		  }
+		  if(distTpUp <= 2) {
+			  e.setCancelled(true);
+		  }
+		  if(distTpDown <= 2) {
 			  e.setCancelled(true);
 		  }
 	  }
@@ -355,7 +373,7 @@ public class PlayerListener implements Listener {
   }
   
   @EventHandler
-  public void onPlayerPlace(BlockPlaceEvent e) {
+  public void onPlayerPlace(BlockPlaceEvent e) { 
 	  double dist = e.getBlock().getLocation().distance(this.main.getBanner());
 	  
 	  if (dist<= 2) {
@@ -380,6 +398,8 @@ public class PlayerListener implements Listener {
 	  }
   }
   
+
+  
   public ItemStack metaExtra(Material m, String ItemName, int Amount, String[] lore) {
 	    ItemStack item = new ItemStack(m, Amount);
 	    ItemMeta im = item.getItemMeta();
@@ -388,6 +408,15 @@ public class PlayerListener implements Listener {
 	    item.setItemMeta(im);
 	    return item;
 	  } // metaExtra(Material, "", 1, new String[] {"", ""})
+  
+  public ItemStack skullMeta(String ItemName, UUID UUID) {
+	  ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short)3);
+	  SkullMeta skullMeta = (SkullMeta)skull.getItemMeta();
+	  skullMeta.setOwner(Bukkit.getPlayer(UUID).getName());
+	  skullMeta.setDisplayName(ItemName);
+	  skull.setItemMeta((ItemMeta)skullMeta);
+	  return skull;
+  }
   
   public ItemStack metaBanner(DyeColor color, String ItemName) {
 	  ItemStack item = new ItemStack(Material.BANNER, 1);

@@ -132,11 +132,11 @@ public int NbPurple = 0;
 	    	
 	       if(current.getItemMeta().getDisplayName() == "§eChoisir l'équipe des attaquants") {
 	    	   if(Camp.ATTAQUE.getValue() > NbAttaque) {
-	    	   this.removeCamp(psd);
-	    	   this.NbAttaque++;
-	    	   this.main.setCamp(player, Camp.ATTAQUE);
-	    	   player.sendMessage("§7Vous avez rejoint l'équipe des §cAttaquants §7!");
-	    	   setBanner(player, psd.getCamp());
+	    		   this.removeCamp(psd);
+	    		   this.NbAttaque++;
+	    		   this.main.setCamp(player, Camp.ATTAQUE);
+	    		   player.sendMessage("§7Vous avez rejoint l'équipe des §cAttaquants §7!");
+	    		   setBanner(player, psd.getCamp());
 	    	   }
 	       }
 	       if(current.getItemMeta().getDisplayName() == "§eChoisir l'équipe des défenseurs") {
@@ -155,46 +155,67 @@ public int NbPurple = 0;
 	    	   setBanner(player, psd.getCamp());
 	       }
 	       if(current.getItemMeta().getDisplayName() == "§eChoisir l'équipe rouge") {
+	    	   if(Camp.RED.getValue() > NbRed ) {
 	    	   this.removeCamp(psd);
-	    	   this.main.setCamp(player, Camp.RED);
-	    	   player.sendMessage("§7Vous avez rejoint l'Équipe §4Rouge §7!");
+	    	   this.NbRed++;
+	    	   this.main.setCamp(player, Camp.RED);	    	   
+	    	   player.sendMessage("§7Vous avez rejoint l'Équipe §4Rouge §7!");	    	   
 	    	   setBanner(player, psd.getCamp());
+	    	   }
 	       }
 	       if(current.getItemMeta().getDisplayName() == "§eChoisir l'équipe orange") {
+	    	   if(Camp.ORANGE.getValue() > NbOrange ){
 	    	   this.removeCamp(psd);
+	    	   this.NbOrange++;
 	    	   this.main.setCamp(player, Camp.ORANGE);
 	    	   player.sendMessage("§7Vous avez rejoint l'Équipe §6Orange §7!");
 	    	   setBanner(player, psd.getCamp());
+	    	   }
 	       }
 	       if(current.getItemMeta().getDisplayName() == "§eChoisir l'équipe jaune") {
+	    	   if(Camp.YELLOW.getValue() > NbYellow) {
 	    	   this.removeCamp(psd);
+	    	   this.NbYellow++;
 	    	   this.main.setCamp(player, Camp.YELLOW);
 	    	   player.sendMessage("§7Vous avez rejoint l'Équipe §eJaune §7!");
 	    	   setBanner(player, psd.getCamp());
+	    	   }
 	       }
 	       if(current.getItemMeta().getDisplayName() == "§eChoisir l'équipe verte") {
+	    	   if(Camp.GREEN.getValue() > NbGreen) {
 	    	   this.removeCamp(psd);
+	    	   this.NbGreen++;
 	    	   this.main.setCamp(player, Camp.GREEN);
 	    	   player.sendMessage("§7Vous avez rejoint l'Équipe §aVerte §7!");
 	    	   setBanner(player, psd.getCamp());
+	    	   }
 	       }
 	       if(current.getItemMeta().getDisplayName() == "§eChoisir l'équipe cyan") {
+	    	   if(Camp.AQUA.getValue() > NbAqua) {
 	    	   this.removeCamp(psd);
+	    	   this.NbAqua++;
 	    	   this.main.setCamp(player, Camp.AQUA);
 	    	   player.sendMessage("§7Vous avez rejoint l'Équipe §bCyan §7!");
 	    	   setBanner(player, psd.getCamp());
+	    	   }
 	       }
 	       if(current.getItemMeta().getDisplayName() == "§eChoisir l'équipe rose") {
+	    	   if(Camp.PINK.getValue() > NbPink) {
 	    	   this.removeCamp(psd);
+	    	   this.NbPink++;
 	    	   this.main.setCamp(player, Camp.PINK);
 	    	   player.sendMessage("§7Vous avez rejoint l'Équipe §dRose §7!");
 	    	   setBanner(player, psd.getCamp());
+	    	   }
 	       }
 	       if(current.getItemMeta().getDisplayName() == "§eChoisir l'équipe violette") {
+	    	   if(Camp.PURPLE.getValue() > NbPurple) {
 	    	   this.removeCamp(psd);
+	    	   this.NbPurple++;
 	    	   this.main.setCamp(player, Camp.PURPLE);
 	    	   player.sendMessage("§7Vous avez rejoint l'Équipe §5Violette §7!");
 	    	   setBanner(player, psd.getCamp());
+	    	   }
 	       }
 	       
 	       
@@ -260,25 +281,28 @@ public int NbPurple = 0;
 	    		this.main.menusd.pvpEdit(player);
 	    	}
 	    }
+	    if(view.getTitle().equals("§7Les règles de la partie")) {
+	    	event.setCancelled(true);
+	    }
 	    	    	    	    	    
 	    if (view.getTitle().equals("§7Paramètres de la Bordure")) {
 	    	event.setCancelled(true);
 	    	if(current.getItemMeta().getDisplayName() == "§eRetour") {	  
 	    		this.main.menusd.configList(player);
 	    	}
-	    	if(current.getItemMeta().getDisplayName() == "§b- 50 Blocs" && event.getSlot() == 10) {	  
+	    	if(current.getItemMeta().getDisplayName() == "§b- 50 Blocs" && event.getSlot() == 14) {	  
 	    		editBorder(BorderSD.BORDER_MIN, -50);
 	    		this.main.menusd.borderEdit(player);
 	    	}
-	    	if(current.getItemMeta().getDisplayName() == "§b+ 50 Blocs" && event.getSlot() == 12) {	  
+	    	if(current.getItemMeta().getDisplayName() == "§b+ 50 Blocs" && event.getSlot() == 16) {	  
 	    		editBorder(BorderSD.BORDER_MIN, 50);
 	    		this.main.menusd.borderEdit(player);
 	    	}
-	    	if(current.getItemMeta().getDisplayName() == "§b- 50 Blocs" && event.getSlot() == 14) {	  
+	    	if(current.getItemMeta().getDisplayName() == "§b- 50 Blocs" && event.getSlot() == 10) {	  
 	    		editBorder(BorderSD.BORDER_MAX, -50);
 	    		this.main.menusd.borderEdit(player);
 	    	}
-	    	if(current.getItemMeta().getDisplayName() == "§b+ 50 Blocs" && event.getSlot() == 16) {	  
+	    	if(current.getItemMeta().getDisplayName() == "§b+ 50 Blocs" && event.getSlot() == 12) {	  
 	    		editBorder(BorderSD.BORDER_MAX, 50);
 	    		this.main.menusd.borderEdit(player);
 	    	}
@@ -448,7 +472,19 @@ public int NbPurple = 0;
 	    	}
 	    	
 	    }
-	  }
+	    if(view.getTitle().equals("§7Les règles de la partie")) {
+	    	event.setCancelled(true);
+	    	if(current.getItemMeta().getDisplayName().equals("§eAfficher les Scénarios de la Partie")) {
+	    		this.main.menusd.ScenarioList(player);
+	    	}
+	    }
+	    if(view.getTitle().equals("§7Liste des scénarios")) {
+	    	event.setCancelled(true);
+	    	if(current.getItemMeta().getDisplayName().contains("Retour")) {	  
+	    		this.main.menusd.rulesList(player);
+	    	}
+	    }
+	    }
 	}
 	
 	public void increaseEnhancement(RulesSD ench, ClickType click) {
@@ -489,15 +525,14 @@ public int NbPurple = 0;
 		PlayerSD psd = this.main.playersd.get(player.getUniqueId());
 		if(this.main.mjc.isSpectator(player.getUniqueId()) == true) {
 			this.main.mjc.setSpectator(player.getUniqueId(), Boolean.valueOf(false));
-			
+			psd.setState(State.VIVANT);
+    		this.main.score.addPlayerSize();					
+		} else if (this.main.mjc.isSpectator(player.getUniqueId()) == false) {
+			this.main.mjc.setSpectator(player.getUniqueId(), Boolean.valueOf(true));
 			psd.setState(State.SPEC);
     		psd.setCamp(Camp.NULL);
 			this.main.score.removePlayerSize();	
-			
-		} else if (this.main.mjc.isSpectator(player.getUniqueId()) == false) {
-			this.main.mjc.setSpectator(player.getUniqueId(), Boolean.valueOf(true));
-			psd.setState(State.VIVANT);
-    		this.main.score.addPlayerSize();	
+				
 		} else {
 			
 		}
@@ -512,39 +547,45 @@ public int NbPurple = 0;
 	public void increaseTeams(Camp camp, ClickType click) {
 		if(click == ClickType.LEFT || click == ClickType.SHIFT_LEFT) {
 			if(camp.getValue() >= 1) {
-			camp.setValue(camp.getValue() - 1);
-			List<UUID> players = new ArrayList<>(this.main.playersd.keySet());
-		    while (!players.isEmpty()) {
-		      UUID playernames = players.get(0);
-		      Player playerss = Bukkit.getPlayer(playernames);
-		      PlayerSD psds = this.main.playersd.get(playernames);   
-		      if(psds.getCamp() != Camp.NULL) {
-	    		   if(psds.getCamp() == Camp.ATTAQUE) {
-	    			   this.NbAttaque--;
-	    		   } else if(psds.getCamp() == Camp.DEFENSE) {
-	    			   this.NbDefense--;
-	    		   } else if (psds.getCamp() == Camp.RED) {
-	    			   this.NbRed--;
-	    		   } else if (psds.getCamp() == Camp.ORANGE) {
-	    			   this.NbOrange--;
-	    		   } else if (psds.getCamp() == Camp.YELLOW) {
-	    			   this.NbYellow--;
-	    		   } else if (psds.getCamp() == Camp.GREEN) {
-	    			   this.NbGreen--;
-	    		   } else if (psds.getCamp() == Camp.AQUA) {
-	    			   this.NbAqua--;
-	    		   } else if (psds.getCamp() == Camp.PINK) {
-	    			   this.NbPink--;
-	    		   } else if (psds.getCamp() == Camp.PURPLE) {
-	    			   this.NbPurple--;
-	    		   }
-	    	   }
-		      psds.setCamp(Camp.NULL);
-	    	  playerss.setCustomName("§7[§fAucune Équipe§7] " + playerss.getName());
-	    	  playerss.setPlayerListName("§7[§fAucune Équipe§7] " + playerss.getName());
-	    	  playerss.getInventory().setItem(4, metaBanner(DyeColor.WHITE, "§eChoisir une équipe !"));   			      
-		      players.remove(0);
-		    }
+				if(camp == Camp.DEFENSE) {
+					if(Camp.DEFENSE.getValue() > 1) {
+						camp.setValue(camp.getValue() - 1);
+					}
+				} else {
+					camp.setValue(camp.getValue() - 1);
+				}
+				List<UUID> players = new ArrayList<>(this.main.playersd.keySet());
+				while (!players.isEmpty()) {
+					UUID playernames = players.get(0);
+					Player playerss = Bukkit.getPlayer(playernames);
+					PlayerSD psds = this.main.playersd.get(playernames);   
+					if(psds.getCamp() != Camp.NULL) {
+						if(psds.getCamp() == Camp.ATTAQUE) {
+							this.NbAttaque--;
+						} else if(psds.getCamp() == Camp.DEFENSE) {
+							this.NbDefense--;
+						} else if (psds.getCamp() == Camp.RED) {
+							this.NbRed--;
+						} else if (psds.getCamp() == Camp.ORANGE) {
+							this.NbOrange--;
+						} else if (psds.getCamp() == Camp.YELLOW) {
+							this.NbYellow--;
+						} else if (psds.getCamp() == Camp.GREEN) {
+							this.NbGreen--;
+						} else if (psds.getCamp() == Camp.AQUA) {
+							this.NbAqua--;
+						} else if (psds.getCamp() == Camp.PINK) {
+							this.NbPink--;
+						} else if (psds.getCamp() == Camp.PURPLE) {
+							this.NbPurple--;
+						}
+					}
+					psds.setCamp(Camp.NULL);
+					playerss.setCustomName("§7[§fAucune Équipe§7] " + playerss.getName());
+					playerss.setPlayerListName("§7[§fAucune Équipe§7] " + playerss.getName());
+					playerss.getInventory().setItem(4, metaBanner(DyeColor.WHITE, "§eChoisir une équipe !"));   			      
+					players.remove(0);
+				}
 			}
 		} else if (click == ClickType.RIGHT || click == ClickType.SHIFT_RIGHT) {
 			camp.setValue(camp.getValue() + 1);

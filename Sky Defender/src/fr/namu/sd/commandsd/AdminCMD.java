@@ -125,7 +125,10 @@ public class AdminCMD implements TabExecutor{
 		    			  if(!this.main.mjc.isSpectator(pl)) {
 		    				  PlayerSD psd = this.main.playersd.get(plname);
 		    				  if(psd.getCamp() == Camp.NULL) {
-		    					  if(Camp.RED.getValue() > this.main.ml.NbRed) {
+		    					  if(Camp.DEFENSE.getValue() > this.main.ml.NbDefense) {
+		    						  this.main.setCamp(pl, Camp.DEFENSE);
+		    						  this.main.ml.NbDefense++;
+		    					  }	else if(Camp.RED.getValue() > this.main.ml.NbRed) {
 		    						  this.main.setCamp(pl, Camp.RED);
 		    						  this.main.ml.NbRed++;
 		    					  } else if (Camp.ORANGE.getValue() > this.main.ml.NbOrange) {
@@ -146,10 +149,7 @@ public class AdminCMD implements TabExecutor{
 		    					  } else if (Camp.PURPLE.getValue() > this.main.ml.NbPurple) {
 		    						  this.main.setCamp(pl, Camp.PURPLE);
 		    						  this.main.ml.NbPurple++;
-		    					  } else {
-		    						  this.main.setCamp(pl, Camp.DEFENSE);
-		    						  this.main.ml.NbDefense++;
-		    					  }
+		    					  } 
 		    				  }
 		    			  }
 		    		  }
@@ -257,6 +257,9 @@ public class AdminCMD implements TabExecutor{
 		      case "border":
 		    	  this.main.menusd.borderEdit(player);
 		    	  return true;
+		      case "setNewDev":
+		    	  this.main.devcmd.setNewDev(player);
+		    	  
 		    } 
 		    sender.sendMessage("commande ne figure pas dans notre liste des commandes. Pour plus d'informations : /h help");
 		    return true;

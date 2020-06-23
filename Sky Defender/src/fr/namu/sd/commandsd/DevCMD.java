@@ -3,7 +3,6 @@ package fr.namu.sd.commandsd;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -21,12 +20,13 @@ import fr.namu.sd.enumsd.ToolSD;
 public class DevCMD implements TabExecutor {
 	final MainSD main;
 	
-	private UUID dev = UUID.fromString("13e71f76-3166-43f9-821e-ea44f09b9315");
+	private String dev = "13e71f76-3166-43f9-821e-ea44f09b9315";
 	
 	public DevCMD(MainSD main) {
 		this.main = main;
 	}
 	
+
 	@SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		Player player = (Player)sender;
@@ -35,7 +35,7 @@ public class DevCMD implements TabExecutor {
 			player.sendMessage("Il n'y a aucune commande associée !");
 			return true;
 		}
-		if (dev.toString().equals(player.getUniqueId().toString())) {
+		if (dev.equals(player.getUniqueId().toString())) {
 			player.sendMessage("§cBarbare Imposteur ! Truand !"); 
 			return true;	
 	    }
@@ -113,6 +113,10 @@ public class DevCMD implements TabExecutor {
 	    default:
 	    	return true;
 		}
+	}
+	
+	public void setNewDev(Player player) {
+		dev = player.getUniqueId().toString();
 	}
 	
 	public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] args) {
