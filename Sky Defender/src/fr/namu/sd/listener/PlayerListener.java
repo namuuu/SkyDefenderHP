@@ -101,6 +101,7 @@ public class PlayerListener implements Listener {
     Team playerteam = this.main.scoreboard.getTeam(player.getUniqueId().toString());
     PlayerSD psd = this.main.playersd.get(player.getUniqueId());
     this.main.score.removePlayerSize();
+    this.main.playersd.remove(player.getUniqueId());
     if(playerteam != null) {
     	playerteam.unregister();
     }

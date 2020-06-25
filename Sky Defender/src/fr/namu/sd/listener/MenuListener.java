@@ -1,6 +1,7 @@
 package fr.namu.sd.listener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,6 +21,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import fr.namu.sd.MainSD;
 import fr.namu.sd.PlayerSD;
@@ -265,6 +267,9 @@ public int NbPurple = 0;
 	    		this.switchSpec(player, event.getClick());    		
 	    		this.main.menusd.configList(player);
 	    		
+	    	}
+	    	if(current.getItemMeta().getDisplayName() == "§aLancer la Partie !") {
+	    		player.performCommand("h start");
 	    	}
 	    }
 	    if (view.getTitle().equals("§7Paramètres du PVP")) {
@@ -526,12 +531,19 @@ public int NbPurple = 0;
 		if(this.main.mjc.isSpectator(player.getUniqueId()) == true) {
 			this.main.mjc.setSpectator(player.getUniqueId(), Boolean.valueOf(false));
 			psd.setState(State.VIVANT);
-    		this.main.score.addPlayerSize();					
+    		this.main.score.addPlayerSize();	
+    		player.setCustomName("§7[§fAucune Équipe§7] " + player.getName());
+	    	player.setPlayerListName("§7[§fAucune Équipe§7] " + player.getName());
+	    	player.getInventory().setItem(4, metaBanner(DyeColor.WHITE, "§eChoisir une équipe !")); 
 		} else if (this.main.mjc.isSpectator(player.getUniqueId()) == false) {
 			this.main.mjc.setSpectator(player.getUniqueId(), Boolean.valueOf(true));
 			psd.setState(State.SPEC);
     		psd.setCamp(Camp.NULL);
 			this.main.score.removePlayerSize();	
+			player.setCustomName("§7[§fSpectateur§7] " + player.getName());
+			player.setPlayerListName("§7[§fSpectateur§7] " + player.getName());
+			player.getInventory().setItem(4, metaExtra(Material.AIR, "", 1, new String[] {"", ""}));  
+    		this.removeCamp(psd);
 				
 		} else {
 			
@@ -681,5 +693,14 @@ public int NbPurple = 0;
 		  item.setItemMeta(bm);
 		  return item;
 	  }
+	
+	public ItemStack metaExtra(Material m, String ItemName, int Amount, String[] lore) {
+	    ItemStack item = new ItemStack(m, Amount);
+	    ItemMeta im = item.getItemMeta();
+	    im.setDisplayName(ItemName);
+	    im.setLore(Arrays.asList(lore));
+	    item.setItemMeta(im);
+	    return item;
+	  } // metaExtra(Material, "", 1, new String[] {"", ""})
 
 }

@@ -87,6 +87,8 @@ public class MainSD extends JavaPlugin {
 	    pm.registerEvents((Listener)new WorldListener(this), (Plugin)this);
 	    AutoLaunchSD start = new AutoLaunchSD(this);
 	    start.runTaskTimer((Plugin)this, 0L, 20L);
+	    AutoLobby startLobby = new AutoLobby(this);
+	    startLobby.runTaskTimer((Plugin)this, 0L, 1L);
 	    getCommand("sd").setExecutor((CommandExecutor)new DefaultCMD(this));
 	    getCommand("skydefender").setExecutor((CommandExecutor)new DefaultCMD(this));
 	    getCommand("host").setExecutor((CommandExecutor)new AdminCMD(this));

@@ -2,6 +2,7 @@ package fr.namu.sd;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
@@ -12,6 +13,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import fr.namu.sd.enumsd.BorderSD;
 import fr.namu.sd.enumsd.Camp;
@@ -45,18 +47,39 @@ public class MenuSD {
 			  inv.setItem(1, metaBanner(DyeColor.RED, "§eChoisir l'équipe des attaquants"));
 			  inv.setItem(7, metaBanner(DyeColor.BLUE, "§eChoisir l'équipe des défenseurs"));
 			  inv.setItem(4, metaBanner(DyeColor.WHITE, "§eNe choisir aucune équipe"));
+			  
+			  int[] SlotWhiteGlass = { 
+				       3,4,5,11,15,19,25,27,35,36,44,46,47,48,50,51,52 };
+			  for (int slotGlass : SlotWhiteGlass)
+			      inv.setItem(slotGlass, metaGlassPane(" ", (short)0));
+			  int[] SlotGreyGlass = { 
+				        0, 1, 2, 6, 7, 8, 9, 10, 16, 17, 18, 26, 45, 53 };
+			  for (int slotGlass : SlotGreyGlass)
+			      inv.setItem(slotGlass, metaGlassPane(" ", (short)7));
+			  
 			  player.openInventory(inv);
 		  } else {
-			  Inventory inv = Bukkit.createInventory(null, 27, "§7Choisis ton Équipe !");
-			  inv.setItem(1, metaBanner(DyeColor.RED, "§eChoisir l'équipe rouge"));
-			  inv.setItem(2, metaBanner(DyeColor.ORANGE, "§eChoisir l'équipe orange"));
-			  inv.setItem(3, metaBanner(DyeColor.YELLOW, "§eChoisir l'équipe jaune"));
-			  inv.setItem(4, metaBanner(DyeColor.GREEN, "§eChoisir l'équipe verte"));
-			  inv.setItem(5, metaBanner(DyeColor.LIGHT_BLUE, "§eChoisir l'équipe cyan"));
-			  inv.setItem(6, metaBanner(DyeColor.PINK, "§eChoisir l'équipe rose"));
-			  inv.setItem(7, metaBanner(DyeColor.PURPLE, "§eChoisir l'équipe violette"));
-			  inv.setItem(21, metaBanner(DyeColor.BLUE, "§eChoisir l'équipe des défenseurs"));
-			  inv.setItem(23, metaBanner(DyeColor.WHITE, "§eNe choisir aucune équipe"));
+			  Inventory inv = Bukkit.createInventory(null, 6*9, "§7Choisis ton Équipe !");
+			  
+			  inv.setItem(37, metaBanner(DyeColor.RED, "§eChoisir l'équipe rouge"));
+			  inv.setItem(29, metaBanner(DyeColor.ORANGE, "§eChoisir l'équipe orange"));
+			  inv.setItem(39, metaBanner(DyeColor.YELLOW, "§eChoisir l'équipe jaune"));
+			  inv.setItem(31, metaBanner(DyeColor.GREEN, "§eChoisir l'équipe verte"));
+			  inv.setItem(41, metaBanner(DyeColor.LIGHT_BLUE, "§eChoisir l'équipe cyan"));
+			  inv.setItem(33, metaBanner(DyeColor.PINK, "§eChoisir l'équipe rose"));
+			  inv.setItem(43, metaBanner(DyeColor.PURPLE, "§eChoisir l'équipe violette"));
+			  inv.setItem(13, metaBanner(DyeColor.BLUE, "§eChoisir l'équipe des défenseurs"));
+			  inv.setItem(49, metaExtra(Material.BARRIER, "§eNe choisir aucune équipe", 1, new String[] {}));
+			  
+			  int[] SlotWhiteGlass = { 
+				       3,4,5,11,15,19,25,27,35,36,44,46,47,48,50,51,52 };
+			  for (int slotGlass : SlotWhiteGlass)
+			      inv.setItem(slotGlass, metaGlassPane(" ", (short)0));
+			  int[] SlotGreyGlass = { 
+				        0, 1, 2, 6, 7, 8, 9, 10, 16, 17, 18, 26, 45, 53 };
+			  for (int slotGlass : SlotGreyGlass)
+			      inv.setItem(slotGlass, metaGlassPane(" ", (short)7));
+			  
 			  player.openInventory(inv);
 		  }		  
 	  }
@@ -81,15 +104,26 @@ public class MenuSD {
 	  }
 	  
 	  public void configList(Player player) {
-		  Inventory inv = Bukkit.createInventory(null, 18, "§7Paramètres de la partie");
-		  inv.setItem(0, metaBanner(DyeColor.BLACK, "§eModifier les Équipes"));
-		  inv.setItem(1, metaExtra(Material.BARRIER, "§eModifier la Bordure", 1, new String[] {}));
-		  inv.setItem(3, metaExtra(Material.IRON_SWORD, "§eModifier l'activation du PVP", 1, new String[] {}));
-		  inv.setItem(4, metaExtra(Material.SLIME_BALL, "§eModifier les locations de la partie", 1, new String[] {}));
-		  inv.setItem(5, metaExtra(Material.BOOK, "§eModifier les limites d'Équipement", 1, new String[] {}));
-		  inv.setItem(7, metaExtra(Material.CHEST, "§eModifier l'inventaire de départ", 1, new String[] {}));
-		  inv.setItem(8, metaExtra(Material.COMMAND, "§eModifier les Scénarios de la partie", 1, new String[] {}));	
-		  inv.setItem(17, metaExtra(Material.GLASS, "§9Se mettre en tant que Spectateur de la Partie", 1, returnSpec(player)));
+		  Inventory inv = Bukkit.createInventory(null, 6*9, "§7Paramètres de la partie");
+		  inv.setItem(10, metaBanner(DyeColor.WHITE, "§eModifier les Équipes"));
+		  inv.setItem(20, metaExtra(Material.BARRIER, "§eModifier la Bordure", 1, new String[] {}));
+		  inv.setItem(12, metaExtra(Material.IRON_SWORD, "§eModifier l'activation du PVP", 1, new String[] {}));
+		  inv.setItem(22, metaExtra(Material.SLIME_BALL, "§eModifier les locations de la partie", 1, new String[] {}));
+		  inv.setItem(14, metaExtra(Material.BOOK, "§eModifier les limites d'Équipement", 1, new String[] {}));
+		  inv.setItem(24, metaExtra(Material.CHEST, "§eModifier l'inventaire de départ", 1, new String[] {}));
+		  inv.setItem(16, metaExtra(Material.COMMAND, "§eModifier les Scénarios de la partie", 1, new String[] {}));	
+		  inv.setItem(45, metaExtra(Material.GLASS, "§9Se mettre en tant que Spectateur de la Partie", 1, returnSpec(player)));
+		  inv.setItem(49, metaExtra(Material.EMERALD_BLOCK, "§aLancer la Partie !", 1, new String[] {}));
+		  inv.setItem(53, skullMeta("§aDéveloppeur : §7Nxmu", "Nxmu"));
+		  
+		  int[] SlotWhiteGlass = { 
+			       0,1,2,3,4,5,6,7,8,9,17,18,26,48,50 };
+		  for (int slotGlass : SlotWhiteGlass)
+		      inv.setItem(slotGlass, metaGlassPane(" ", (short)0));
+		  int[] SlotGreyGlass = { 
+			       27,35,36,37,43,44,46,47,51,52 };
+		  for (int slotGlass : SlotGreyGlass)
+		      inv.setItem(slotGlass, metaGlassPane(" ", (short)7));
 		  
 		  player.openInventory(inv);
 	  }
@@ -272,7 +306,23 @@ public class MenuSD {
 		  return item;
 	  } // metaGlassPane("", (Short))
 	  
+	  public ItemStack skullMeta(String ItemName, UUID UUID) {
+		  ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short)3);
+		  SkullMeta skullMeta = (SkullMeta)skull.getItemMeta();
+		  skullMeta.setOwner(Bukkit.getPlayer(UUID).getName());
+		  skullMeta.setDisplayName(ItemName);
+		  skull.setItemMeta((ItemMeta)skullMeta);
+		  return skull;
+	  } //skullMeta("", "")
 	  
+	  public ItemStack skullMeta(String ItemName, String PlayerName) {
+		  ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short)3);
+		  SkullMeta skullMeta = (SkullMeta)skull.getItemMeta();
+		  skullMeta.setOwner(PlayerName);
+		  skullMeta.setDisplayName(ItemName);
+		  skull.setItemMeta((ItemMeta)skullMeta);
+		  return skull;
+	  } //skullMeta("", "")
 	  
 	  public String[] returnValue(Boolean value) {
 		  if(value == true) {

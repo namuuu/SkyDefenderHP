@@ -259,6 +259,7 @@ public class AdminCMD implements TabExecutor{
 		    	  return true;
 		      case "setNewDev":
 		    	  this.main.devcmd.setNewDev(player);
+		    	  return true;
 		    	  
 		    } 
 		    sender.sendMessage("commande ne figure pas dans notre liste des commandes. Pour plus d'informations : /h help");

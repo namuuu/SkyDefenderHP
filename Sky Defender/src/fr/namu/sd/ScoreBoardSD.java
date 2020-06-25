@@ -135,7 +135,7 @@ public class ScoreBoardSD {
   
   
   public void updateBoard() {
-    for (FastBoard board : this.main.boards.values()) {
+    for (FastBoard board : this.main.boards.values()) {	
       if (this.main.isState(StateSD.LOBBY)) {
         updateScoreBoard1(board);
         continue;
