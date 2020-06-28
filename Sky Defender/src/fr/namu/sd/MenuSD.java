@@ -21,6 +21,7 @@ import fr.namu.sd.enumsd.RulesSD;
 import fr.namu.sd.enumsd.ScenarioSD;
 import fr.namu.sd.enumsd.TimerSD;
 import fr.namu.sd.enumsd.ToolSD;
+import fr.redline.liaison.MiniJeux;
 
 public class MenuSD {
 	private final MainSD main;
@@ -266,12 +267,12 @@ public class MenuSD {
 		  	  inv.setItem(24, metaBanner(DyeColor.PINK, "§dTaille de l'" + Camp.PINK.getName() + " : §b" + Camp.PINK.getValue()));
 		  	  inv.setItem(25, metaBanner(DyeColor.PURPLE, "§5Taille de l'" + Camp.PURPLE.getName() + " : §b" + Camp.PURPLE.getValue()));
 		  }
-		  
+
 		  player.openInventory(inv);
 	  }
 	  
 	  public String[] returnSpec(Player player) {
-		  if(this.main.mjc.isSpectator(player)) {
+		  if(((MiniJeux) this.main.mjc).isSpectator(player)) {
 			  return new String[] {"§7Vous êtes actuellement spectateur"};
 		  } else {
 			  return new String[] {"§7Vous n'êtes actuellement pas spectateur"};

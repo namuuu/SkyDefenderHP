@@ -41,7 +41,7 @@ public class DefaultCMD implements TabExecutor{
 
 	    	  player.spigot().sendMessage(msg);
 	      case "inv" :
-	    	  if(sender instanceof Player && this.main.mjc.isSpectator(((Player) sender).getUniqueId())) {
+	    	  if(sender instanceof Player && this.main.mjc.isSpectator((((Player) sender).getUniqueId()))) {
 	    		  try {
 	    			  Player Sender = (Player)sender;
 	    			  Player Select = Bukkit.getPlayer(args[1]);

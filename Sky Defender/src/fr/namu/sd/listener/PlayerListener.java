@@ -60,7 +60,7 @@ public class PlayerListener implements Listener {
   @EventHandler
   private void onWhiteList(WhiteListEvent event) {
 	  if (event.isHost()) {
-		  PlayerListener.hostName = event.getPlPseudo().getUniqueId();
+		  PlayerListener.hostName = event.getPlUUID();
 	  }
   }
   

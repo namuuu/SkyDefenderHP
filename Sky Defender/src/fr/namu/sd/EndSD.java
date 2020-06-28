@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import fr.namu.sd.enumsd.Camp;
@@ -79,6 +81,24 @@ public class EndSD {
 	    Bukkit.broadcastMessage("§6§lH.Party §7» §c" + player.getName() + " §eremporte cette partie de §6Sky Defender §e!");
 	    Bukkit.broadcastMessage(" ");
 	  }
-
+  
+  public void hasardTP(List<Player> p, World world) {
+	  for (Integer ind = 0; ind < p.size(); ind++) {
+		  Location p0 = p.get(0).getLocation();		  
+		  Player p1 = p.get(ind);
+		  Player p2 = null;
+		  if(ind == p.size() - 1) {
+			  p2 = null;
+		  } else {
+			  p2 = p.get(ind + 1);
+		  }
+		  
+		  if(p2 != null) {
+			  p1.teleport(p2.getLocation());
+		  } else {
+			  p1.teleport(p0);
+		  }
+	  }
+  }
   }
 

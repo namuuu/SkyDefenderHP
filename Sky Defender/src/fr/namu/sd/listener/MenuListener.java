@@ -523,53 +523,53 @@ public int NbPurple = 0;
 			tool.setValue(true);
 		} else {
 			
+			}
 		}
-	}
-	
-	public void switchSpec(Player player, ClickType click) {
-		PlayerSD psd = this.main.playersd.get(player.getUniqueId());
-		if(this.main.mjc.isSpectator(player.getUniqueId()) == true) {
-			this.main.mjc.setSpectator(player.getUniqueId(), Boolean.valueOf(false));
-			psd.setState(State.VIVANT);
-    		this.main.score.addPlayerSize();	
-    		player.setCustomName("§7[§fAucune Équipe§7] " + player.getName());
-	    	player.setPlayerListName("§7[§fAucune Équipe§7] " + player.getName());
-	    	player.getInventory().setItem(4, metaBanner(DyeColor.WHITE, "§eChoisir une équipe !")); 
-		} else if (this.main.mjc.isSpectator(player.getUniqueId()) == false) {
-			this.main.mjc.setSpectator(player.getUniqueId(), Boolean.valueOf(true));
-			psd.setState(State.SPEC);
-    		psd.setCamp(Camp.NULL);
-			this.main.score.removePlayerSize();	
-			player.setCustomName("§7[§fSpectateur§7] " + player.getName());
-			player.setPlayerListName("§7[§fSpectateur§7] " + player.getName());
-			player.getInventory().setItem(4, metaExtra(Material.AIR, "", 1, new String[] {"", ""}));  
-    		this.removeCamp(psd);
+
+		public void switchSpec(Player player, ClickType click) {
+			PlayerSD psd = this.main.playersd.get(player.getUniqueId());
+			if(this.main.mjc.isSpectator(player.getUniqueId()) == true) {
+				this.main.mjc.setSpectator(player.getUniqueId(), Boolean.valueOf(false));
+				psd.setState(State.VIVANT);
+	    		this.main.score.addPlayerSize();	
+	    		player.setCustomName("§7[§fAucune Équipe§7] " + player.getName());
+		    	player.setPlayerListName("§7[§fAucune Équipe§7] " + player.getName());
+		    	player.getInventory().setItem(4, metaBanner(DyeColor.WHITE, "§eChoisir une équipe !")); 
+			} else if (this.main.mjc.isSpectator(player.getUniqueId()) == false) {
+				this.main.mjc.setSpectator(player.getUniqueId(), Boolean.valueOf(true));
+				psd.setState(State.SPEC);
+	    		psd.setCamp(Camp.NULL);
+				this.main.score.removePlayerSize();	
+				player.setCustomName("§7[§fSpectateur§7] " + player.getName());
+				player.setPlayerListName("§7[§fSpectateur§7] " + player.getName());
+				player.getInventory().setItem(4, metaExtra(Material.AIR, "", 1, new String[] {"", ""}));  
+	    		this.removeCamp(psd);
+					
+			} else {
 				
-		} else {
-			
+			}
 		}
-	}
-	
-	public void editBorder(BorderSD border, int value) {
-		if(border.getValue() + value > 0) {
-			border.setValue(border.getValue() + value);
+		
+		public void editBorder(BorderSD border, int value) {
+			if(border.getValue() + value > 0) {
+				border.setValue(border.getValue() + value);
+			}
 		}
-	}
-	
-	public void increaseTeams(Camp camp, ClickType click) {
-		if(click == ClickType.LEFT || click == ClickType.SHIFT_LEFT) {
-			if(camp.getValue() >= 1) {
-				if(camp == Camp.DEFENSE) {
-					if(Camp.DEFENSE.getValue() > 1) {
+		
+		public void increaseTeams(Camp camp, ClickType click) {
+			if(click == ClickType.LEFT || click == ClickType.SHIFT_LEFT) {
+				if(camp.getValue() >= 1) {
+					if(camp == Camp.DEFENSE) {
+						if(Camp.DEFENSE.getValue() > 1) {
+							camp.setValue(camp.getValue() - 1);
+						}
+					} else {
 						camp.setValue(camp.getValue() - 1);
 					}
-				} else {
-					camp.setValue(camp.getValue() - 1);
-				}
-				List<UUID> players = new ArrayList<>(this.main.playersd.keySet());
-				while (!players.isEmpty()) {
-					UUID playernames = players.get(0);
-					Player playerss = Bukkit.getPlayer(playernames);
+					List<UUID> players = new ArrayList<>(this.main.playersd.keySet());
+					while (!players.isEmpty()) {
+						UUID playernames = players.get(0);
+						Player playerss = Bukkit.getPlayer(playernames);
 					PlayerSD psds = this.main.playersd.get(playernames);   
 					if(psds.getCamp() != Camp.NULL) {
 						if(psds.getCamp() == Camp.ATTAQUE) {
