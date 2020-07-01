@@ -194,7 +194,7 @@ public class AutoLaunchSD extends BukkitRunnable {
 		      player.setCompassTarget(spawnp);
 		      player.setGameMode(GameMode.SURVIVAL);
 		      player.sendMessage(message);
-		      this.main.rg.acm.confiance.add(player.getUniqueId());
+		      RankGestion.nL.acmArrayList.add(playername);
 		      player.teleport(spawnp);
 		    } 
 		  }
@@ -222,7 +222,7 @@ public class AutoLaunchSD extends BukkitRunnable {
 			      player.setCompassTarget(teamSpawn);
 			      player.setGameMode(GameMode.SURVIVAL);
 			      player.sendMessage(message);
-			      this.main.rg.acm.confiance.add(player.getUniqueId());
+			      RankGestion.nL.acmArrayList.add(playername);
 			      player.teleport(teamSpawn);
 	    	  }
 	      }

@@ -78,7 +78,7 @@ public class MainSD extends JavaPlugin {
 	public void onEnable() {
 		System.out.println("Sky Defender is enabled.");
 		enableSeeds();
-		this.mjc = new MiniJeux(this, "SkyDefender", Bukkit.getServerName(), 24, 25578); 
+		this.mjc = new MiniJeux(this, "SkyDefender", Bukkit.getServerName(), 24, 25578, this.mapName, Boolean.valueOf(true)); 
 	    setState(StateSD.LOBBY);
 	    this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 	    PluginManager pm = getServer().getPluginManager();
