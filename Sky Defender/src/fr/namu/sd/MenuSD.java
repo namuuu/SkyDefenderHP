@@ -21,8 +21,7 @@ import fr.namu.sd.enumsd.RulesSD;
 import fr.namu.sd.enumsd.ScenarioSD;
 import fr.namu.sd.enumsd.TimerSD;
 import fr.namu.sd.enumsd.ToolSD;
-import fr.redline.liaison.MiniJeux;
-
+ 
 public class MenuSD {
 	private final MainSD main;
 	
@@ -86,7 +85,7 @@ public class MenuSD {
 	  }
 	  
 	  public void rulesList(Player player) {
-		  Inventory inv = Bukkit.createInventory(null, 6*9, "");
+		  Inventory inv = Bukkit.createInventory(null, 6*9, "§7Les règles de la partie");
 		  
 		  inv.setItem(10, metaExtra(Material.DIAMOND, "§eNombre de pièces en diamant", 1, new String[] {"§bPièces :§a" + RulesSD.DIAMOND_ARMOR_NB.getValue()}));
 		  inv.setItem(12, metaExtra(Material.IRON_SWORD, "§eNiveau du Sharpness", 1, new String[] {"§bÉpée en Diamant :§a" + RulesSD.DIAMOND_SHARPNESS.getValue(), "§bÉpée en Fer :§a" + RulesSD.IRON_SHARPNESS.getValue()}));
@@ -272,7 +271,7 @@ public class MenuSD {
 	  }
 	  
 	  public String[] returnSpec(Player player) {
-		  if(((MiniJeux) this.main.mjc).isSpectator(player)) {
+		  if(this.main.mjc.isSpectator(player)) {
 			  return new String[] {"§7Vous êtes actuellement spectateur"};
 		  } else {
 			  return new String[] {"§7Vous n'êtes actuellement pas spectateur"};

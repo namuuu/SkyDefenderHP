@@ -24,8 +24,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
 
-import fr.RedLine.RankGestion.RankGestion;
-import fr.RedLine.Util.TabGestion;
 import fr.namu.sd.commandsd.AdminCMD;
 import fr.namu.sd.commandsd.DefaultCMD;
 import fr.namu.sd.commandsd.DevCMD;
@@ -35,8 +33,9 @@ import fr.namu.sd.enumsd.StateSD;
 import fr.namu.sd.listener.MenuListener;
 import fr.namu.sd.listener.PlayerListener;
 import fr.namu.sd.listener.WorldListener;
-
-import fr.redline.liaison.MiniJeux;
+import fr.redline.psystem.rankgestion.RankGestion;
+import fr.redline.serverclient.liaison.StartSC;
+import fr.redline.serverclient.minijeux.MiniJeux;
 
 public class MainSD extends JavaPlugin {
 
@@ -77,9 +76,10 @@ public class MainSD extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		System.out.println("Sky Defender is enabled.");
-		enableSeeds();
-		this.mjc = new MiniJeux(this, "SkyDefender", Bukkit.getServerName(), 24, 25578, this.mapName, Boolean.valueOf(true)); 
-	    setState(StateSD.LOBBY);
+		setState(StateSD.LOBBY);
+		enableSeeds();	
+		setWorld();
+		this.mjc = StartSC.createMiniJeux("SkyDefender", "Party", this.mapName, 8, Boolean.valueOf(true), Boolean.valueOf(false));			    
 	    this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 	    PluginManager pm = getServer().getPluginManager();
 	    pm.registerEvents((Listener)new PlayerListener(this), (Plugin)this);
@@ -94,12 +94,12 @@ public class MainSD extends JavaPlugin {
 	    getCommand("host").setExecutor((CommandExecutor)new AdminCMD(this));
 	    getCommand("h").setExecutor((CommandExecutor)new AdminCMD(this));
 	    getCommand("dev").setExecutor((CommandExecutor)new DevCMD(this));
-	    setWorld();
-	    MiniJeux.worldutils.saveWorld(Bukkit.getWorld("world"));
+	    
+	    StartSC.getInstance().wu.saveWorld(Bukkit.getWorld("world"));
 	    mjc.newGame();
 	    mjc.registerToServer();
 	    mjc.setLeaveRestricted(false);
-	    TabGestion.actualise = false;
+	    fr.redline.psystem.util.TabGestion.actualise = false;
 	    this.setScoreBoardTeams();
 	    }
 	
@@ -258,7 +258,7 @@ public class MainSD extends JavaPlugin {
 	}
 	
 	public void enableSeeds() {
-		new SeedSD("Médiévale", "bc70bd50-6e25-4658-a774-cd4fa4ec861e", new Location(Bukkit.getWorld("world"), -3, 209, -19), new Location(Bukkit.getWorld("world"), -22, 158, 0), new Location(Bukkit.getWorld("world"), 0, 70, 0), new Location(Bukkit.getWorld("world"), 0, 189, 0));
+		new SeedSD("Medieval", "bc70bd50-6e25-4658-a774-cd4fa4ec861e", new Location(Bukkit.getWorld("world"), -3, 209, -19), new Location(Bukkit.getWorld("world"), -22, 158, 0), new Location(Bukkit.getWorld("world"), 0, 70, 0), new Location(Bukkit.getWorld("world"), 0, 189, 0));
         new SeedSD("Observatoire", "f8f54319-5aa7-43b6-a48f-4b4de1a41db5", new Location(Bukkit.getWorld("world"), 0, 240, 0), new Location(Bukkit.getWorld("world"), 65, 197, 31), new Location(Bukkit.getWorld("world"), 66, 69, 44), new Location(Bukkit.getWorld("world"), 1, 230, 0));
 	}
 	
@@ -270,10 +270,10 @@ public class MainSD extends JavaPlugin {
 	        this.defdown = seedsd.getTPDown();
 	        this.defup = seedsd.getTPUP();
 	        this.defspawn = seedsd.getDefSpawn();
-	        System.out.println("§e[H.PARTY] §fUne Map a été trouvée ! Son WUID est : " + seedsd.getWUID());
+	        System.out.println("[H.PARTY] Une Map a été trouvée ! Son WUID est : " + seedsd.getWUID());
 	        this.mapName = seedsd.getName();
 		} else {
-			System.out.println("§e[H.PARTY] §fAucune Map n'a été trouvée...");
+			System.out.println("[H.PARTY] Aucune Map n'a été trouvée...");
 			this.mapName = "Custom Map";
 		}
 		

@@ -123,8 +123,9 @@ public int NbPurple = 0;
 	    Player player = (Player)event.getWhoClicked();
 	    PlayerSD psd = (PlayerSD)this.main.playersd.get(player.getUniqueId());
 	    ItemStack current = event.getCurrentItem();
-	    if(event.getInventory().getType().equals(InventoryType.PLAYER) && player.getGameMode().equals(GameMode.ADVENTURE) && this.main.isState(StateSD.LOBBY) && current != null){
-	    	event.setCancelled(true);	    	
+	    if(invent.getType() != InventoryType.CHEST && player.getGameMode().equals(GameMode.ADVENTURE) && this.main.isState(StateSD.LOBBY)){
+	    	event.setCancelled(true);
+	    	return;
 	    }
 	    if(current != null && current.hasItemMeta() == true && current.getItemMeta().getDisplayName() != null) {
 	    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
@@ -529,14 +530,14 @@ public int NbPurple = 0;
 		public void switchSpec(Player player, ClickType click) {
 			PlayerSD psd = this.main.playersd.get(player.getUniqueId());
 			if(this.main.mjc.isSpectator(player.getUniqueId()) == true) {
-				this.main.mjc.setSpectator(player.getUniqueId(), Boolean.valueOf(false));
+				this.main.mjc.setSpectator(player, Boolean.valueOf(false));
 				psd.setState(State.VIVANT);
 	    		this.main.score.addPlayerSize();	
 	    		player.setCustomName("§7[§fAucune Équipe§7] " + player.getName());
 		    	player.setPlayerListName("§7[§fAucune Équipe§7] " + player.getName());
 		    	player.getInventory().setItem(4, metaBanner(DyeColor.WHITE, "§eChoisir une équipe !")); 
 			} else if (this.main.mjc.isSpectator(player.getUniqueId()) == false) {
-				this.main.mjc.setSpectator(player.getUniqueId(), Boolean.valueOf(true));
+				this.main.mjc.setSpectator(player, Boolean.valueOf(true));
 				psd.setState(State.SPEC);
 	    		psd.setCamp(Camp.NULL);
 				this.main.score.removePlayerSize();	

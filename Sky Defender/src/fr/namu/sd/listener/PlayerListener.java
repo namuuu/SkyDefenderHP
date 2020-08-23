@@ -26,8 +26,6 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
@@ -44,7 +42,9 @@ import fr.namu.sd.enumsd.Camp;
 import fr.namu.sd.enumsd.ScenarioSD;
 import fr.namu.sd.enumsd.State;
 import fr.namu.sd.enumsd.StateSD;
-import fr.redline.event.WhiteListEvent;
+import fr.redline.serverclient.event.AuthorisePlayerConnectedEvent;
+import fr.redline.serverclient.event.AuthorisePlayerDisconnectedEvent;
+import fr.redline.serverclient.event.WhiteListEvent;
 
 public class PlayerListener implements Listener {
   private final MainSD main;
@@ -65,7 +65,7 @@ public class PlayerListener implements Listener {
   }
   
   @EventHandler
-  private void onJoin(PlayerJoinEvent event) {
+  private void onJoin(AuthorisePlayerConnectedEvent event) {
     this.main.joinPlayer(event.getPlayer());
     Player player = event.getPlayer();
     PlayerSD puhg = (PlayerSD)this.main.playersd.get(player.getUniqueId());
@@ -87,7 +87,7 @@ public class PlayerListener implements Listener {
   
   
   @EventHandler
-  public void onJoinMessage(PlayerJoinEvent e) {
+  public void onJoinMessage(AuthorisePlayerConnectedEvent e) {
     if (this.main.isState(StateSD.LOBBY)) {
       e.setJoinMessage("§a+ §7» §e"+ e.getPlayer().getName());
     } else if (this.main.playersd.containsKey(e.getPlayer().getUniqueId()) && ((PlayerSD)this.main.playersd.get(e.getPlayer().getUniqueId())).isState(State.VIVANT)) {
@@ -96,7 +96,7 @@ public class PlayerListener implements Listener {
   }
   
   @EventHandler
-  public void onQuit(PlayerQuitEvent e) {
+  public void onQuit(AuthorisePlayerDisconnectedEvent e) {
     Player player = e.getPlayer();
     Team playerteam = this.main.scoreboard.getTeam(player.getUniqueId().toString());
     PlayerSD psd = this.main.playersd.get(player.getUniqueId());

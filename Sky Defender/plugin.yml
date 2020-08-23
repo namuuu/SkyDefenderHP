@@ -16,7 +16,7 @@ commands:
     description: Commandes des administrateurs
     usage: /h <command>
   dev:
-    description: Commande du développeur
+    description: Commandes du developpeur
     usage: /dev <command>
-loadafter: [GameClient, HPartyPlayer]
-depend: [GameClient, HPartyPlayer]
+loadafter: [MiniGameClient, PlayerSystem]
+depend: [MiniGameClient, PlayerSystem]

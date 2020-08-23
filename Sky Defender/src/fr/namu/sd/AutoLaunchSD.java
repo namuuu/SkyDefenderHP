@@ -22,12 +22,12 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import fr.RedLine.RankGestion.RankGestion;
 import fr.namu.sd.enumsd.BorderSD;
 import fr.namu.sd.enumsd.Camp;
 import fr.namu.sd.enumsd.ScenarioSD;
 import fr.namu.sd.enumsd.StateSD;
 import fr.namu.sd.enumsd.ToolSD;
+import fr.redline.psystem.rankgestion.RankGestion;
 
 public class AutoLaunchSD extends BukkitRunnable {
 	
@@ -194,7 +194,7 @@ public class AutoLaunchSD extends BukkitRunnable {
 		      player.setCompassTarget(spawnp);
 		      player.setGameMode(GameMode.SURVIVAL);
 		      player.sendMessage(message);
-		      RankGestion.nL.acmArrayList.add(playername);
+		      RankGestion.nL.addtoWL(playername);
 		      player.teleport(spawnp);
 		    } 
 		  }
@@ -222,7 +222,7 @@ public class AutoLaunchSD extends BukkitRunnable {
 			      player.setCompassTarget(teamSpawn);
 			      player.setGameMode(GameMode.SURVIVAL);
 			      player.sendMessage(message);
-			      RankGestion.nL.acmArrayList.add(playername);
+			      RankGestion.nL.addtoWL(playername);
 			      player.teleport(teamSpawn);
 	    	  }
 	      }
