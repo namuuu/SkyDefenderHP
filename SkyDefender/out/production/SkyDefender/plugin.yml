@@ -1,0 +1,9 @@
+name: SkyDefender
+version: 0.8
+main: fr.namu.sd.MainSD
+commands:
+  host:
+    aliases: h
+    description: Commande pour Host
+loadafter: [MiniGameClient]
+depend: [MiniGameClient]

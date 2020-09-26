@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="SkyDefender:jar">
+    <output-path>$USER_HOME$/OneDrive/Bureau/Sandbox Server/plugins</output-path>
+    <root id="archive" name="SkyDefender.jar">
+      <element id="module-output" name="SkyDefender" />
+    </root>
+  </artifact>
+</component>
